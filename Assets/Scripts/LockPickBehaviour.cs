@@ -4,45 +4,43 @@ using UnityEngine;
 
 public class LockPickBehaviour : MonoBehaviour
 {
-    [SerializeField]
-    private Camera cam;
-    
-    [SerializeField]
-    private Transform innerLock;
-    
-    [SerializeField]
-    private Transform pickPos;
-    
-    private float maxAngle = 90f;
-    
-    private float lockSpeed = 10f;
-    
+    public Camera cam;
+    public Transform innerLock;
+    public Transform pickPosition;
+
+    public float maxAngle = 90;
+    public float lockSpeed = 10;
+
+    [Range(1,25)]
     public float lockRange = 10;
 
     private float eulerAngle;
     private float unlockAngle;
     private Vector2 unlockRange;
 
-    private float keyPressTime;
+    private float keyPressTime = 0;
+
     private bool movePick = true;
-    
+
+    // Start is called before the first frame update
     void Start()
     {
-        InitLock();
+        newLock();
     }
-    
+
+    // Update is called once per frame
     void Update()
     {
-        transform.localPosition = pickPos.position;
+        transform.localPosition = pickPosition.position;
 
-        if (movePick)
+        if(movePick)
         {
-            Vector3 dir = Input.mousePosition - cam.ViewportToScreenPoint(transform.position);
+            Vector3 dir = Input.mousePosition - cam.WorldToScreenPoint(transform.position);
+
             eulerAngle = Vector3.Angle(dir, Vector3.up);
 
             Vector3 cross = Vector3.Cross(Vector3.up, dir);
-            if (cross.z < 0)
-                eulerAngle = -eulerAngle;
+            if (cross.z < 0) { eulerAngle = -eulerAngle; }
 
             eulerAngle = Mathf.Clamp(eulerAngle, -maxAngle, maxAngle);
 
@@ -50,40 +48,43 @@ public class LockPickBehaviour : MonoBehaviour
             transform.rotation = rotateTo;
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
+        if(Input.GetKeyDown(KeyCode.D))
         {
             movePick = false;
             keyPressTime = 1;
         }
-
-        if (Input.GetKeyUp(KeyCode.D))
+        if(Input.GetKeyUp(KeyCode.D))
         {
             movePick = true;
             keyPressTime = 0;
         }
 
-        float pct = Mathf.Round(100 - Mathf.Abs((100 - (eulerAngle / -unlockAngle) / 100) * 100));
-        float lockRotation = ((pct / 100) * maxAngle) * keyPressTime;
-        float maxRotation = (pct / 100) * maxAngle;
+        float percentage = Mathf.Round(100 - Mathf.Abs(((eulerAngle - unlockAngle) / 100) * 100));
+        float lockRotation = ((percentage / 100) * maxAngle) * keyPressTime;
+        float maxRotation = (percentage / 100) * maxAngle;
 
         float lockLerp = Mathf.Lerp(innerLock.eulerAngles.z, lockRotation, Time.deltaTime * lockSpeed);
         innerLock.eulerAngles = new Vector3(0, 0, lockLerp);
 
-        if (lockLerp >= maxRotation - 1)
+        if(lockLerp >= maxRotation -1)
         {
             if (eulerAngle < unlockRange.y && eulerAngle > unlockRange.x)
             {
-                Debug.Log("unlocked");
+                Debug.Log("Unlocked!");
+                newLock();
+
+                movePick = true;
+                keyPressTime = 0;
             }
             else
             {
-                float lockShake = Random.insideUnitCircle.x;
-                transform.eulerAngles += new Vector3(0, 0, Random.Range(-lockShake, lockShake));
+                float randomRotation = Random.insideUnitCircle.x;
+                transform.eulerAngles += new Vector3(0, 0, Random.Range(-randomRotation, randomRotation));
             }
         }
     }
 
-    void InitLock()
+    void newLock()
     {
         unlockAngle = Random.Range(-maxAngle + lockRange, maxAngle - lockRange);
         unlockRange = new Vector2(unlockAngle - lockRange, unlockAngle + lockRange);

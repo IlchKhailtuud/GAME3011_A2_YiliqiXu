@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42ed42723321b42499710c48b2ecf0fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timerText: {fileID: 1696569138}
 --- !u!4 &306124362
 Transform:
   m_ObjectHideFlags: 0
@@ -217,7 +218,6 @@ MonoBehaviour:
   pickPosition: {fileID: 1672250871}
   maxAngle: 90
   lockSpeed: 10
-  lockRange: 10
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,7 +906,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 120s
+  m_text: 00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

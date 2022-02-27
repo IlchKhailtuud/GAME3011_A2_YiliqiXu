@@ -15,4 +15,27 @@ public class SceneManager : MonoBehaviour
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(scene, LoadSceneMode.Single);
     }
+
+    public void OnEasyClicked()
+    {
+        GameManager.Instance.Difficulty = 25;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("game");
+    }
+
+    public void OnNormalClicked()
+    {
+        GameManager.Instance.Difficulty = 10;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("game");
+    }
+
+    public void OnHardClicked()
+    {
+        GameManager.Instance.Difficulty = 1;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("game");
+    }
+
+    public void OnExitClicked()
+    {
+        Application.Quit();
+    }
 }

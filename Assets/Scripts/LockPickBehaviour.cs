@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LockPickBehaviour : MonoBehaviour
@@ -26,16 +27,26 @@ public class LockPickBehaviour : MonoBehaviour
 
     private bool movePick = true;
 
-    // Start is called before the first frame update
+    public TMP_Text timerText;
+    
+    private float timer = 60f;
+    private float timeElapsed;
+    
     void Start()
     {
         lockRange = GameManager.Instance.Difficulty;
         InitLock();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
+        if (timer > 0)
+            CountDownTimer();
+        else
+            UnityEngine.SceneManagement.SceneManager.LoadScene("lose");
+        
+        timerText.text = timer.ToString(); 
+        
         transform.localPosition = pickPosition.position;
 
         if(movePick)
@@ -75,11 +86,12 @@ public class LockPickBehaviour : MonoBehaviour
         {
             if (pickAngle < unlockRange.y && pickAngle > unlockRange.x)
             {
-                Debug.Log("Unlocked!");
-                InitLock();
+                UnityEngine.SceneManagement.SceneManager.LoadScene("win");
+                // Debug.Log("Unlocked!");
+                // InitLock();
 
-                movePick = true;
-                keyPressTime = 0;
+                //movePick = true;
+                //keyPressTime = 0;
             }
             else
             {
@@ -93,5 +105,16 @@ public class LockPickBehaviour : MonoBehaviour
     {
         unlockAngle = Random.Range(-maxAngle + lockRange, maxAngle - lockRange);
         unlockRange = new Vector2(unlockAngle - lockRange, unlockAngle + lockRange);
+    }
+    
+    void CountDownTimer()
+    {
+        timeElapsed += Time.deltaTime;
+
+        if (timeElapsed >= 1)
+        {
+            timer--;
+            timeElapsed = 0;
+        }
     }
 }

@@ -30,7 +30,7 @@ public class SceneManager : MonoBehaviour
 
     public void OnHardClicked()
     {
-        GameManager.Instance.Difficulty = 1;
+        GameManager.Instance.Difficulty = 5;
         UnityEngine.SceneManagement.SceneManager.LoadScene("game");
     }
 

@@ -63,7 +63,7 @@ public class LockPickBehaviour : MonoBehaviour
         float lockRotation = ((percentage / 100) * maxAngle) * keyPressTime;
         float maxRotation = (percentage / 100) * maxAngle;
 
-        float lockLerp = Mathf.Lerp(innerLock.eulerAngles.z, lockRotation, Time.deltaTime * lockSpeed);
+        float lockLerp = Mathf.LerpAngle(innerLock.eulerAngles.z, lockRotation, Time.deltaTime * lockSpeed);
         innerLock.eulerAngles = new Vector3(0, 0, lockLerp);
 
         if(lockLerp >= maxRotation -1)

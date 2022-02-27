@@ -29,7 +29,7 @@ public class LockPickBehaviour : MonoBehaviour
 
     public TMP_Text timerText;
     
-    private float timer = 60f;
+    private float timer = 20f;
     private float timeElapsed;
     
     void Start()

@@ -24,7 +24,7 @@ public class SceneManager : MonoBehaviour
 
     public void OnNormalClicked()
     {
-        GameManager.Instance.Difficulty = 10;
+        GameManager.Instance.Difficulty = 15;
         UnityEngine.SceneManagement.SceneManager.LoadScene("game");
     }
 
